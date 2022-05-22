@@ -26,8 +26,8 @@
                 {
                     if (CheckTriangleIsRight(a, b, c))
                     {
-                        Tuple<double, double[]> sideValues = DefineSideValues(a, b, c);
-                        return CalculateRightTriangleArea(sideValues.Item2[0], sideValues.Item2[1]);
+                        ValueTuple<double, ValueTuple<double, double>> sideValues = DefineSideValues(a, b, c);
+                        return CalculateRightTriangleArea(sideValues.Item2.Item1, sideValues.Item2.Item2);
                     }
                     else
                     {
@@ -57,7 +57,7 @@
 
         public static bool CheckRealTriangle(double a, double b, double c)
         {
-            bool condition = ((a + b > c) && (a + c > b) && (b + c > b));
+            bool condition = ((a + b > c) && (a + c > b) && (b + c > a));
             return condition;
         }
 
@@ -69,31 +69,31 @@
 
         public static bool CheckTriangleIsRight(double a, double b, double c)
         {
-            Tuple<double, double[]> sideValues = DefineSideValues(a, b, c);
+            ValueTuple<double, ValueTuple<double, double>> sideValues = DefineSideValues(a, b, c);
             bool triangleRightCondition = 
-                Math.Pow(sideValues.Item2[0], 2) + Math.Pow(sideValues.Item2[1], 2) == Math.Pow(sideValues.Item1, 2);
+                Math.Pow(sideValues.Item2.Item1, 2) + Math.Pow(sideValues.Item2.Item2, 2) == Math.Pow(sideValues.Item1, 2);
             return triangleRightCondition;
         }
 
-        public static Tuple<double, double[]> DefineSideValues(double a, double b, double c)
+        public static ValueTuple<double, ValueTuple<double, double>> DefineSideValues(double a, double b, double c)
         {
             double maxSideValue = Math.Max(Math.Max(a, b), c);
 
             if (maxSideValue == a)
             {
-                return new Tuple<double, double[]>(a, new double[2] { b, c });
+                return (a, (b, c));
             }
             else if (maxSideValue == b)
             {
-                return new Tuple<double, double[]>(b, new double[2] { a, c });
+                return (b, (a, c));
             }
             else if (maxSideValue == c)
             {
-                return new Tuple<double, double[]>(c, new double[2] { a, b });
+                return (c, (a, b));
             }
             else
             {
-                return new Tuple<double, double[]>(c, new double[2] { a, b });
+                return (c, (a, b));
             }
         }
 

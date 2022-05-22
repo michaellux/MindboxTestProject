@@ -10,9 +10,11 @@ namespace CalculateArea.Tests
     internal class CalculateTriangleAreaTests
     {
         [TestCase(0.433013, 1, 1, 1)]
+        [TestCase(0, 4, 2, 2)]
+        [TestCase(10.547851, 6.4, 3.3, 7.34)]
         public void TestCalculateTriangleAreaBySides(double expectedArea, double a, double b, double c)
         {
-            Assert.AreEqual(expectedArea, Library.Calculator.CalculateTriangleAreaBySides(a, b, c));
+            Assert.AreEqual(expectedArea, Library.Calculator.CalculateTriangleAreaBySides(a, b, c), 0.000001);
         }
 
         [TestCase(true, 9, 40, 41)]
@@ -31,13 +33,20 @@ namespace CalculateArea.Tests
             Assert.AreEqual(expected, Library.Calculator.CheckTriangleIsRight(a, b, c));
         }
 
-        [TestCase(3, 3, 2, 1)]
-        [TestCase(2, 0, 2, 1)]
-        [TestCase(3, 1, 2, 3)]
-        [TestCase(2, 2, 2, 2)]
-        public void TestFindMaxSideValue(double expected, double a, double b, double c)
+        [TestCaseSource(nameof(SideValues))]
+        public void TestDefineSideValues(ValueTuple<double, ValueTuple<double, double>> expected, double a, double b, double c)
         {
             Assert.AreEqual(expected, Library.Calculator.DefineSideValues(a, b, c));
+        }
+        public static IEnumerable<TestCaseData> SideValues
+        {
+            get
+            {
+                yield return new TestCaseData((3.0, (2.0, 1.0)), 3.0, 2.0, 1.0);
+                yield return new TestCaseData((2.0, (0.0, 1.0)), 0.0, 2.0, 1.0);
+                yield return new TestCaseData((3.0, (1.0, 2.0)), 1.0, 2.0, 3.0);
+                yield return new TestCaseData((2.0, (2.0, 2.0)), 2.0, 2.0, 2.0);
+            }
         }
 
         [TestCase(3, 2, 3)]
@@ -53,15 +62,15 @@ namespace CalculateArea.Tests
         [TestCase(13.63589, 6, 6, 5)]
         public void TestTriangleAreaByHeronFormula(double expected, double a, double b, double c)
         {
-            Assert.AreEqual(expected, Library.Calculator.CalculateTriangleAreaByHeronFormula(a, b, c));
+            Assert.AreEqual(expected, Library.Calculator.CalculateTriangleAreaByHeronFormula(a, b, c), 0.000001);
         }
 
-        [TestCase(0.992156, 3, 2, 2)]
-        [TestCase(0.334045, 1.2, 3.4, 2.3)]
-        [TestCase(85.57444, 15, 24, 32)]
+        [TestCase(3.5, 3, 2, 2)]
+        [TestCase(3.45, 1.2, 3.4, 2.3)]
+        [TestCase(35.5, 15, 24, 32)]
         public void TestCalculateTriangleSemiperimeter(double expected, double a, double b, double c)
         {
-            Assert.AreEqual(expected, Library.Calculator.CalculateTriangleSemiperimeter(a, b, c));
+            Assert.AreEqual(expected, Library.Calculator.CalculateTriangleSemiperimeter(a, b, c), 0.000001);
         }
 
         [TestCase(false, 0, -1, 6)]
